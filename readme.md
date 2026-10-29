@@ -1,3 +1,5 @@
+![Refined Forgejo](.github/banner.png)
+
 # Refine Forgejo
 
 > Browser extension that simplifies the Forgejo interface and adds useful features
@@ -304,3 +306,7 @@ Ported from [Refined GitHub](https://github.com/refined-github/refined-github), 
 ## Customization
 
 Most features can be disabled. CSS‑only features can be overridden via the extension's options page.
+
+---
+
+The banner uses the [Forgejo logo](https://codeberg.org/forgejo/meta/src/branch/readme/branding#logo) by Caesar Schinas, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
