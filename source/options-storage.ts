@@ -4,8 +4,6 @@ import { getTokenForUrl, type SiteEntry } from "./helpers/site-domains.js";
 export type RGFOptions = {
   actionUrl: string;
   customCss: string;
-  defaultToken: string;
-  personalToken?: string;
   sites: SiteEntry[];
   logging: boolean;
   domains?: string;
@@ -21,7 +19,6 @@ const defaultSites: SiteEntry[] = [
 const defaults: RGFOptions = {
   actionUrl: location.origin,
   customCss: "",
-  defaultToken: "",
   sites: defaultSites.map(site => ({ ...site })),
   logging: false,
 };
@@ -65,16 +62,6 @@ const optionsStorage = {
     return {
       ...defaults,
       ...stored,
-      defaultToken: typeof stored.defaultToken === "string"
-        ? stored.defaultToken
-        : typeof stored.personalToken === "string"
-        ? stored.personalToken
-        : "",
-      personalToken: typeof stored.personalToken === "string"
-        ? stored.personalToken
-        : typeof stored.defaultToken === "string"
-        ? stored.defaultToken
-        : "",
       sites,
       domains: sites.map(site => site.url).join("\n"),
     };
@@ -83,7 +70,8 @@ const optionsStorage = {
 
 async function getTokenImpl(): Promise<string> {
   const result = await optionsStorage.getAll();
-  return getTokenForUrl(result.sites, new URL(location.href)) || result.defaultToken || result.personalToken || "";
+  // No global fallback token: a token is only ever sent to the site it was saved for
+  return getTokenForUrl(result.sites, new URL(location.href)) ?? "";
 }
 
 export const getToken = mem(getTokenImpl);
