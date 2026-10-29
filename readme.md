@@ -57,7 +57,6 @@ Ported from [Refined GitHub](https://github.com/refined-github/refined-github), 
 - [x] **quick-file-edit** – Adds an edit button to files in the repository file list
 - [x] **repo-wide-file-finder** – Enables keyboard shortcut `t` to search files across the entire repository
 - [+] **show-associated-branch-prs-on-fork** – Shows associated PRs on a branch of a forked repository
-- [x] **html-preview-link** – Adds a link to preview HTML files
 - [x] **file-age-color** – Highlights recently modified files
 - [x] **previous-version** – Adds a button to view the previous version of a file
 
