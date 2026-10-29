@@ -51,7 +51,11 @@ export function isFeatureDisabled(options: RGFOptions, id: string): boolean {
 
 const optionsStorage = {
   async getAll(): Promise<RGFOptions> {
-    const stored = (await chrome.storage.sync.get()) as Partial<RGFOptions> & Record<string, unknown>;
+    // Local, not sync: storage.sync uploads site URLs and tokens to the browser vendor's servers.
+    // `cache:` keys belong to webext-storage-cache and hold cached API responses, not options.
+    const stored = Object.fromEntries(
+      Object.entries(await chrome.storage.local.get()).filter(([key]) => !key.startsWith("cache:")),
+    ) as Partial<RGFOptions> & Record<string, unknown>;
     const sites = "sites" in stored
       ? normalizeSites(stored.sites)
       : "domains" in stored
