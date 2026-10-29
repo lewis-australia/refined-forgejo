@@ -57,7 +57,6 @@ Ported from [Refined GitHub](https://github.com/refined-github/refined-github), 
 - [x] **quick-file-edit** – Adds an edit button to files in the repository file list
 - [x] **repo-wide-file-finder** – Enables keyboard shortcut `t` to search files across the entire repository
 - [+] **show-associated-branch-prs-on-fork** – Shows associated PRs on a branch of a forked repository
-- [x] **html-preview-link** – Adds a link to preview HTML files
 - [x] **file-age-color** – Highlights recently modified files
 - [x] **previous-version** – Adds a button to view the previous version of a file
 
@@ -221,7 +220,7 @@ Ported from [Refined GitHub](https://github.com/refined-github/refined-github), 
 - [x] **profile-hotkey** – Adds shortcut `g m` to go to your own profile (in **navigation-hotkeys**)
 - [x] **show-user-top-repositories** – Adds a link to the user's most-starred repositories
 - [x] **hide-user-forks** – Hides forked and archived repositories by default
-- [x] **linkify-user-location** – Makes user location clickable in hovercards and profiles
+- [x] **linkify-user-location** – Makes user location clickable in profiles, using the instance's own map link
 - [x] **conversation-links-on-repo-lists** – Adds tool links to the user's repository tabs and global search
 
 ---

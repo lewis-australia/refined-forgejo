@@ -5,16 +5,13 @@ import type { ApiError } from "./api-types.js";
 
 const apiUrl = () => `${location.origin}/api/v1/`;
 
-function toRequestUrl(path: string): string {
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
+export function toRequestUrl(path: string): string {
+  const url = new URL(path, apiUrl());
+  if (url.origin !== location.origin) {
+    throw new Error(`Refusing to send a request off-site: ${url.origin}`);
   }
 
-  if (path.startsWith("/")) {
-    return new URL(path, location.origin).href;
-  }
-
-  return new URL(path, apiUrl()).href;
+  return url.href;
 }
 
 export type ApiOptions = {

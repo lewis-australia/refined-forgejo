@@ -5,7 +5,21 @@ const contentScriptId = "refined-forgejo-content-script";
 const installOptionsShownKey = "refined-forgejo:install-options-opened";
 let installOptionsPromise: Promise<void> | undefined;
 
+async function moveOptionsOffSync(): Promise<void> {
+  const synced = await chrome.storage.sync.get();
+  if (Object.keys(synced).length === 0) {
+    return;
+  }
+
+  const local = await chrome.storage.local.get(Object.keys(synced));
+  await chrome.storage.local.set({ ...synced, ...local });
+  await chrome.storage.sync.clear();
+}
+
+const optionsMovedOffSync = moveOptionsOffSync().catch(() => {});
+
 async function syncContentScripts(): Promise<void> {
+  await optionsMovedOffSync;
   const { sites } = await optionsStorage.getAll();
   const grantedSites: ForgejoSite[] = [];
 
@@ -77,8 +91,8 @@ chrome.permissions.onRemoved.addListener(() => {
   void syncContentScripts();
 });
 
-chrome.storage.onChanged.addListener((_, areaName) => {
-  if (areaName === "sync") {
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "local" && "sites" in changes) {
     void syncContentScripts();
   }
 });

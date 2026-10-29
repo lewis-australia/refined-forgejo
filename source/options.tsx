@@ -1,4 +1,5 @@
 import "./options.css";
+import { globalCache } from "webext-storage-cache";
 import { featuresMeta } from "./feature-data.js";
 import {
   getPermissionOrigins,
@@ -10,7 +11,6 @@ import {
 import optionsStorage from "./options-storage.js";
 
 const siteValidationControllers = new WeakMap<HTMLDivElement, AbortController>();
-const installOptionsShownKey = "refined-forgejo:install-options-opened";
 const installSitesChecklistOpenedKey = "refined-forgejo:install-sites-checklist-opened";
 
 type SiteValidationState = "pending" | "valid" | "invalid" | "";
@@ -460,7 +460,7 @@ async function saveOptions(): Promise<void> {
   options.sites = getSiteRows();
   delete options.domains;
 
-  await chrome.storage.sync.set(options);
+  await chrome.storage.local.set(options);
 }
 
 function addSiteRow(): void {
@@ -476,14 +476,7 @@ function addSiteRow(): void {
 }
 
 async function clearCache(): Promise<void> {
-  const { [installOptionsShownKey]: installOptionsShown } = await chrome.storage.local.get(installOptionsShownKey);
-
-  await chrome.storage.local.clear();
-
-  if (installOptionsShown === true) {
-    await chrome.storage.local.set({ [installOptionsShownKey]: true });
-  }
-
+  await globalCache.clear();
   alert("Cache cleared");
 }
 
@@ -512,7 +505,7 @@ function handleImport(): void {
     const text = await file.text();
     try {
       const options = JSON.parse(text);
-      await chrome.storage.sync.set(options);
+      await chrome.storage.local.set(options);
       alert("Options imported. Reload the page to see changes.");
     } catch {
       alert("Invalid JSON file");

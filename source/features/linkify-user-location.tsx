@@ -12,48 +12,16 @@ function linkifyProfileLocation(item: Element): void {
   }
 
   const location = locationText.textContent?.trim();
-  if (!location) {
+  const mapLink = item.querySelector<HTMLAnchorElement>("a[href]");
+  if (!location || !mapLink) {
     return;
   }
 
-  const mapLink = item.querySelector<HTMLAnchorElement>("a[href]");
-  const href = mapLink?.href || `https://www.openstreetmap.org/search?query=${encodeURIComponent(location)}`;
-
   locationText.replaceChildren(
-    <a className="rgf-user-location-link" href={href} rel="nofollow noreferrer" target="_blank">
+    <a className="rgf-user-location-link" href={mapLink.href} rel="nofollow noreferrer" target="_blank">
       {location}
     </a>,
   );
-}
-
-function linkifyUserCardLocation(meta: Element): void {
-  if (meta.querySelector("a, a.rgf-user-location-link") || !meta.querySelector("svg.octicon-location")) {
-    return;
-  }
-
-  const text = meta.textContent?.trim();
-  if (!text) {
-    return;
-  }
-
-  const link = (
-    <a
-      className="rgf-user-location-link"
-      href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(text)}`}
-      rel="nofollow noreferrer"
-      target="_blank"
-    >
-      {text}
-    </a>
-  );
-
-  const svg = meta.querySelector("svg.octicon-location");
-  svg?.insertAdjacentElement("afterend", link);
-  for (const node of Array.from(meta.childNodes)) {
-    if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
-      node.remove();
-    }
-  }
 }
 
 function init(signal: AbortSignal): void {
@@ -61,13 +29,7 @@ function init(signal: AbortSignal): void {
     return;
   }
 
-  observe("#profile-avatar-card li:has(svg.octicon-location), .user-cards .meta", element => {
-    if (element.closest("#profile-avatar-card")) {
-      linkifyProfileLocation(element);
-    } else {
-      linkifyUserCardLocation(element);
-    }
-  }, { signal });
+  observe("#profile-avatar-card li:has(svg.octicon-location)", linkifyProfileLocation, { signal });
 }
 
 features.add(import.meta.url, {
