@@ -1,6 +1,5 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-// Mock location before importing api (options-storage reads it at import time)
 beforeAll(() => {
   vi.stubGlobal("location", new URL("https://forgejo.example.com/owner/repo"));
 });

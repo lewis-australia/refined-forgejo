@@ -12,7 +12,6 @@ function linkifyProfileLocation(item: Element): void {
   }
 
   const location = locationText.textContent?.trim();
-  // Only reuse the instance's own map link (USER_LOCATION_MAP_URL), never send the location to an outside map service
   const mapLink = item.querySelector<HTMLAnchorElement>("a[href]");
   if (!location || !mapLink) {
     return;

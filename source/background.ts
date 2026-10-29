@@ -5,8 +5,6 @@ const contentScriptId = "refined-forgejo-content-script";
 const installOptionsShownKey = "refined-forgejo:install-options-opened";
 let installOptionsPromise: Promise<void> | undefined;
 
-// Options used to live in storage.sync, which uploads site URLs and tokens to the browser vendor's servers.
-// Move them to local (keeping anything already there) and wipe the synced copy.
 async function moveOptionsOffSync(): Promise<void> {
   const synced = await chrome.storage.sync.get();
   if (Object.keys(synced).length === 0) {
@@ -18,7 +16,6 @@ async function moveOptionsOffSync(): Promise<void> {
   await chrome.storage.sync.clear();
 }
 
-// Registration reads options from local, so it must wait for the move. A failed move never clears sync.
 const optionsMovedOffSync = moveOptionsOffSync().catch(() => {});
 
 async function syncContentScripts(): Promise<void> {
@@ -95,7 +92,6 @@ chrome.permissions.onRemoved.addListener(() => {
 });
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
-  // Cache writes land in storage.local too; only site changes affect registration
   if (areaName === "local" && "sites" in changes) {
     void syncContentScripts();
   }

@@ -476,7 +476,6 @@ function addSiteRow(): void {
 }
 
 async function clearCache(): Promise<void> {
-  // Options live in storage.local too, so only drop the cache entries
   await globalCache.clear();
   alert("Cache cleared");
 }

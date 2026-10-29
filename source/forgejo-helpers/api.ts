@@ -5,7 +5,6 @@ import type { ApiError } from "./api-types.js";
 
 const apiUrl = () => `${location.origin}/api/v1/`;
 
-// Every request carries the user's token, so never let one leave the current Forgejo origin
 export function toRequestUrl(path: string): string {
   const url = new URL(path, apiUrl());
   if (url.origin !== location.origin) {
