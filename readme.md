@@ -220,7 +220,7 @@ Ported from [Refined GitHub](https://github.com/refined-github/refined-github), 
 - [x] **profile-hotkey** – Adds shortcut `g m` to go to your own profile (in **navigation-hotkeys**)
 - [x] **show-user-top-repositories** – Adds a link to the user's most-starred repositories
 - [x] **hide-user-forks** – Hides forked and archived repositories by default
-- [x] **linkify-user-location** – Makes user location clickable in hovercards and profiles
+- [x] **linkify-user-location** – Makes user location clickable in profiles, using the instance's own map link
 - [x] **conversation-links-on-repo-lists** – Adds tool links to the user's repository tabs and global search
 
 ---
